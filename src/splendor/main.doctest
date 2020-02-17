@@ -36,3 +36,38 @@ Card(color='w', points=0, cost=Gemset(w=0, b=0, g=0, r=0, k=0))
 >>> Card('b', 1, Gemset(w=1, b=1, g=1, r=1, k=0))
 Card(color='b', points=1, cost=Gemset(w=1, b=1, g=1, r=1, k=0))
 
+
+>>> n = Noble(3, (0, 1, 1, 1, 0))
+>>> n
+Noble(points=3, cost=(0, 1, 1, 1, 0))
+
+>>> n.satisfied(())
+False
+
+>>> n.satisfied((
+...     Card(color='b'),
+...     Card(color='g'),
+... ))
+False
+
+>>> n.satisfied((
+...     Card(color='b'),
+...     Card(color='g'),
+...     Card(color='r'),
+... ))
+True
+
+>>> n.satisfied((
+...     Card(color='w'),
+...     Card(color='b'),
+...     Card(color='g'),
+...     Card(color='r'),
+... ))
+True
+
+>>> n.satisfied((
+...     Card(color='w'),
+...     Card(color='b'),
+...     Card(color='g'),
+... ))
+False

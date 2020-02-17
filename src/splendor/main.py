@@ -11,7 +11,7 @@ class Gemset(namedtuple('Gemset', colors)):
         return super().__new__(cls, w, b, g, r, k)
 
     def __init__(self, *args, **kwargs):
-        assert all(isinstance(c, int) for c in self)
+        assert all(isinstance(c, int) for c in self), self
 
     def __neg__(self):
         return type(self)(*map(int.__neg__, self))
@@ -60,3 +60,15 @@ class Card(namedtuple('Card', ['color', 'points', 'cost'])):
         assert self.color in colors, self.color
         assert isinstance(self.points, int), self.points
         assert isinstance(self.cost, Gemset), self.cost
+
+    def benefit(self):
+        # TODO: This is gross.
+        # Consider storing Card.benefit instead of Card.color.
+        return Gemset(**{self.color: 1})
+
+
+class Noble(namedtuple('Noble', ['points', 'cost'])):
+    __slots__ = ()
+
+    def satisfied(self, cards):
+        return self.cost <= Gemset.sum(card.benefit() for card in cards)
