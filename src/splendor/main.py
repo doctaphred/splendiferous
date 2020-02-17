@@ -41,11 +41,19 @@ class Gemset(namedtuple('Gemset', colors)):
     def __abs__(self):
         return sum(self * self) ** 0.5
 
+    @classmethod
+    def empty(cls):
+        return cls(0, 0, 0, 0, 0)
+
+    @classmethod
+    def sum(cls, objs):
+        return sum(objs, cls.empty())
+
 
 class Card(namedtuple('Card', ['color', 'points', 'cost'])):
     __slots__ = ()
 
-    def __new__(cls, color, points=0, cost=Gemset()):
+    def __new__(cls, color, points=0, cost=Gemset.empty()):
         return super().__new__(cls, color, points, cost)
 
     def __init__(self, *args, **kwargs):

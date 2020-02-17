@@ -22,6 +22,15 @@ Gemset(w=0, b=2, g=2, r=2, k=0)
 Gemset(w=0, b=2, g=2, r=2, k=0)
 
 
+>>> Gemset.sum(())
+Gemset(w=0, b=0, g=0, r=0, k=0)
+>>> Gemset.sum((
+...     (1, 1, 1, 1, 1),
+...     (1, 2, 3, 4, 5),
+... ))
+Gemset(w=2, b=3, g=4, r=5, k=6)
+
+
 >>> Card(color='w')
 Card(color='w', points=0, cost=Gemset(w=0, b=0, g=0, r=0, k=0))
 >>> Card('b', 1, Gemset(w=1, b=1, g=1, r=1, k=0))
