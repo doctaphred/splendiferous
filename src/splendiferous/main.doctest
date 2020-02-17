@@ -1,4 +1,4 @@
->>> from splendor.main import *
+>>> from splendiferous.main import *
 
 >>> assert colors == ('w', 'b', 'g', 'r', 'k')
 

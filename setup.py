@@ -6,12 +6,12 @@ requirements = []
 
 
 setup(
-    name="splendor",
+    name="splendiferous",
     version="0.0.1",
     # description="",
     # author_email="",
     # author="",
-    # url="https://github.com/<account>/splendor",
+    # url="https://github.com/<account>/splendiferous",
     packages=find_packages("src"),
     package_dir={"": "src"},
     install_requires=requirements,
