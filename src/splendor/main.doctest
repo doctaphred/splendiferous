@@ -1,0 +1,29 @@
+>>> from splendor.main import *
+
+>>> assert colors == ('w', 'b', 'g', 'r', 'k')
+
+>>> g = Gemset()
+>>> g
+Gemset(w=0, b=0, g=0, r=0, k=0)
+
+>>> g + g
+Gemset(w=0, b=0, g=0, r=0, k=0)
+>>> g * 2
+Gemset(w=0, b=0, g=0, r=0, k=0)
+
+
+>>> g = Gemset(g=1, r=1, b=1)
+>>> g
+Gemset(w=0, b=1, g=1, r=1, k=0)
+
+>>> g + g
+Gemset(w=0, b=2, g=2, r=2, k=0)
+>>> g * 2
+Gemset(w=0, b=2, g=2, r=2, k=0)
+
+
+>>> Card(color='w')
+Card(color='w', points=0, cost=Gemset(w=0, b=0, g=0, r=0, k=0))
+>>> Card('b', 1, Gemset(w=1, b=1, g=1, r=1, k=0))
+Card(color='b', points=1, cost=Gemset(w=1, b=1, g=1, r=1, k=0))
+

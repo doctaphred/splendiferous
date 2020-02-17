@@ -23,10 +23,8 @@ class Gemset(namedtuple('Gemset', colors)):
         return type(self)(*map(int.__sub__, self, other))
 
     def __mul__(self, other):
-        return type(self)(*map(int.__mul__, self, other))
-
-    def __div__(self, other):
-        return type(self)(*map(int.__div__, self, other))
+        assert isinstance(other, int)
+        return type(self)(*map(other.__mul__, self))
 
     def __le__(self, other):
         return all(map(int.__le__, self, other))
