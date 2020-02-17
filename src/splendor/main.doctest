@@ -71,3 +71,80 @@ True
 ...     Card(color='g'),
 ... ))
 False
+
+
+Create a new player and card.
+>>> p = Player(
+...     gems=Gemset(0, 0, 0, 0, 0),
+...     cards=[],
+...     nobles=[],
+... )
+>>> c = Card('b', 1, Gemset(w=1, b=1, g=1, r=1, k=0))
+
+Sanity check the player's default values.
+>>> p.gems
+Gemset(w=0, b=0, g=0, r=0, k=0)
+>>> p.cards
+[]
+>>> p.nobles
+[]
+>>> p.score()
+0
+>>> p.discounts()
+Gemset(w=0, b=0, g=0, r=0, k=0)
+>>> p.power()
+Gemset(w=0, b=0, g=0, r=0, k=0)
+
+The player can't afford the card.
+>>> p.cost(c)
+Gemset(w=1, b=1, g=1, r=1, k=0)
+>>> p.can_buy(c)
+False
+
+Give the player some gems.
+>>> p.gems = Gemset(w=1, b=1, g=1, r=1, k=0)
+
+Gems don't give the player any score or discounts, but do give purchasing power.
+>>> p.score()
+0
+>>> p.discounts()
+Gemset(w=0, b=0, g=0, r=0, k=0)
+>>> p.power()
+Gemset(w=1, b=1, g=1, r=1, k=0)
+
+The player can now buy the card at full price.
+>>> p.cost(c)
+Gemset(w=1, b=1, g=1, r=1, k=0)
+>>> p.cost(c) == c.cost
+True
+>>> p.can_buy(c)
+True
+
+The player buys the card.
+>>> p.buy(c)
+
+The player has the card.
+>>> c in p.cards
+True
+>>> p.cards
+[Card(color='b', points=1, cost=Gemset(w=1, b=1, g=1, r=1, k=0))]
+
+The player has a point from the card.
+>>> p.score()
+1
+
+The player is out of gems, but now has a discount, and still has purchasing power.
+>>> p.gems
+Gemset(w=0, b=0, g=0, r=0, k=0)
+>>> p.discounts()
+Gemset(w=0, b=1, g=0, r=0, k=0)
+>>> p.power()
+Gemset(w=0, b=1, g=0, r=0, k=0)
+
+The same card would now cost less, but the player can't buy it.
+>>> p.cost(c)
+Gemset(w=1, b=0, g=1, r=1, k=0)
+>>> p.cost(c) < c.cost
+True
+>>> p.can_buy(c)
+False

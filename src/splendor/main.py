@@ -39,7 +39,7 @@ class Gemset(namedtuple('Gemset', colors)):
         return self >= other and self != other
 
     def __abs__(self):
-        return sum(self * self) ** 0.5
+        return type(self)(*(max(0, v) for v in self))
 
     @classmethod
     def empty(cls):
@@ -72,3 +72,37 @@ class Noble(namedtuple('Noble', ['points', 'cost'])):
 
     def satisfied(self, cards):
         return self.cost <= Gemset.sum(card.benefit() for card in cards)
+
+
+class Player:
+
+    def __init__(self, gems, cards, nobles):
+        # TODO: Wildcards, hand.
+        self.gems = gems
+        self.cards = cards
+        self.nobles = nobles
+
+    def score(self):
+        return (
+            sum(card.points for card in self.cards)
+            + sum(noble.points for noble in self.nobles)
+        )
+
+    def discounts(self):
+        return Gemset.sum(card.benefit() for card in self.cards)
+
+    def power(self):
+        return self.discounts() + self.gems
+
+    def cost(self, card):
+        return abs(card.cost - self.discounts())
+
+    def can_buy(self, card):
+        return card.cost <= self.power()
+
+    def buy(self, card):
+        assert self.can_buy(card)
+        cost = self.cost(card)
+        assert cost <= card.cost
+        self.cards.append(card)
+        self.gems -= cost
