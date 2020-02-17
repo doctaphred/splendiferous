@@ -10,7 +10,7 @@ lint: venv
 # Create a virtualenv with all requirements installed.
 venv:
 	python3 -m venv venv
-	venv/bin/pip install pip==19.2.2
+	venv/bin/pip install pip==20.0.2
 	venv/bin/pip install -r requirements/dev.txt
 	venv/bin/pip install -e .
 
