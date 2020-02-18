@@ -67,11 +67,11 @@ class Card(namedtuple('Card', ['color', 'points', 'cost'])):
         return Gemset(**{self.color: 1})
 
 
-class Noble(namedtuple('Noble', ['points', 'cost'])):
+class Noble(namedtuple('Noble', ['points', 'criteria'])):
     __slots__ = ()
 
     def satisfied(self, cards):
-        return self.cost <= Gemset.sum(card.benefit() for card in cards)
+        return self.criteria <= Gemset.sum(card.benefit() for card in cards)
 
 
 class Player:
