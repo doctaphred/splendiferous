@@ -4,3 +4,4 @@
 #
 #    pip-compile requirements/main.in
 #
+tqdm==4.51.0              # via -r requirements/main.in
