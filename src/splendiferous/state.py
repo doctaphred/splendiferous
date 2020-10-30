@@ -18,15 +18,17 @@ class State(namedtuple('State', [
     def __repr__(self):
         return self.pretty()
 
-    def pretty(self):
-        return '\n'.join(self._pretty(indent='  '))
+    def pretty(self, cards=False):
+        return '\n'.join(self._pretty(indent='  ', cards=cards))
 
-    def _pretty(self, indent):
+    def _pretty(self, indent, cards):
         yield f"{type(self).__name__}:"
         yield f"{indent}bank_gems: {self.bank_gems}"
         yield f"{indent}player_gems: {self.player_gems}"
-        if self.player_cards:
-            yield f"{indent}player_cards ({len(self.player_cards)}):"
+        yield f"{indent}score: {self.score}"
+        yield f"{indent}discounts: {self.discounts}"
+        yield f"{indent}player_cards: {len(self.player_cards)}"
+        if cards:
             for card in sorted(self.player_cards):
                 yield f"{indent}{indent}{card}"
 

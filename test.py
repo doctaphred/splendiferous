@@ -1,3 +1,5 @@
+from tqdm import tqdm
+
 from splendiferous.utils.search import AStar
 from splendiferous.utils import print_cache_info
 from splendiferous.cards import CARDS
@@ -36,40 +38,36 @@ num_cards = len(start.bank_cards)
 
 
 def main():
-    try:
-        for _ in range(1):
-            search = Search([(start, 0)])
 
-            print(start)
-            from tqdm import tqdm
-            best = 0
-            for i, state in enumerate(tqdm(search)):
-                current = len(state.player_cards)
+    def info():
+        print()
+        print('---')
+        print(state.pretty(cards=False))
+        print()
+        print_cache_info()
+        print()
+        print(search)
+        print(f"{i:,} states searched")
+        print("path length", len(search.find_path(state)))
+
+    try:
+        search = Search([(start, 0)])
+        best = 0
+        for i, state in enumerate(tqdm(search)):
+            current = len(state.player_cards)
+            if current > best or not i % 1000:
                 if current > best:
                     best = current
-                    print()
-                    print(best)
-                    print(state)
-                    print(f" {state.score=}, {state.player_gems=}, {state.discounts=}")
-                    print(len(search.find_path(state)))
-                if len(state.bank_cards) == 0:
-                    break
-                if not i % 1000:
-                    print()
-                    print_cache_info()
-                    print(search)
-                    print(f"{i:,} states searched")
-                # if i == 100000:
-                #     break
+                info()
+            if len(state.bank_cards) == 0:
+                break
 
     except KeyboardInterrupt:
         pass
     finally:
-        print()
-        print_cache_info()
-        print(search)
-        print(f"{i:,} states searched")
+        info()
 
 
 if __name__ == '__main__':
-    main()
+    for _ in range(2):
+        main()
