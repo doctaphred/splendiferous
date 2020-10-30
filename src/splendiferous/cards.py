@@ -13,7 +13,7 @@ class Card(namedtuple('Card', ['level', 'points', 'discount', 'price'])):
             level=int(level),
             points=int(points),
             discount=Gemset.read(color),
-            price=Gemset(*map(int, price)),
+            price=Gemset(map(int, price)),
         )
 
 

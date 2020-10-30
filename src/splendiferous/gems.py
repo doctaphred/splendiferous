@@ -1,24 +1,24 @@
-from collections import Counter, namedtuple
+from collections import Counter
 from itertools import combinations
 
 from .utils import cache
 
 
-class Gemset(namedtuple('Gemset', tuple('wbgrk'))):
+class Gemset(tuple):
     __slots__ = ()
 
     @cache
     def __add__(self, other):
-        return type(self)(*map(int.__add__, self, other))
+        return type(self)(map(int.__add__, self, other))
 
     @cache
     def __sub__(self, other):
-        return type(self)(*map(int.__sub__, self, other))
+        return type(self)(map(int.__sub__, self, other))
 
     @cache
     def __mul__(self, other):
         assert isinstance(other, int)
-        return type(self)(*map(other.__mul__, self))
+        return type(self)(map(other.__mul__, self))
 
     @cache
     def __le__(self, other):
@@ -38,11 +38,11 @@ class Gemset(namedtuple('Gemset', tuple('wbgrk'))):
 
     @cache
     def __and__(self, other):
-        return type(self)(*map(min, self, other))
+        return type(self)(map(min, self, other))
 
     @cache
     def less(self, other):
-        return type(self)(*(max(0, v) for v in self - other))
+        return type(self)((max(0, v) for v in self - other))
 
     @cache
     def __bool__(self):
@@ -51,16 +51,16 @@ class Gemset(namedtuple('Gemset', tuple('wbgrk'))):
     @classmethod
     def read(cls, colors):
         c = Counter(colors)
-        return cls(*[c[color] for color in 'wbgrk'])
+        return cls(c[color] for color in 'wbgrk')
 
     @classmethod
     def unit(cls, i):
-        return cls(*[int(i == j) for j in range(5)])
+        return cls(int(i == j) for j in range(5))
 
 
 UNITS = tuple(Gemset.unit(i) for i in range(5))
-ZERO = Gemset(0, 0, 0, 0, 0)
-ALL = Gemset(7, 7, 7, 7, 7)
+ZERO = Gemset((0, 0, 0, 0, 0))
+ALL = Gemset((7, 7, 7, 7, 7))
 # ALL = sum(UNITS, ZERO) * 7
 
 
