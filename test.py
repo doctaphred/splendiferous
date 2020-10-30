@@ -59,7 +59,8 @@ def main():
                 if current > best:
                     best = current
                 info()
-            if len(state.bank_cards) == 0:
+            # if len(state.bank_cards) == 0:
+            if i == 100_000:
                 break
 
     except KeyboardInterrupt:
@@ -69,5 +70,5 @@ def main():
 
 
 if __name__ == '__main__':
-    for _ in range(2):
+    # for _ in range(2):
         main()
