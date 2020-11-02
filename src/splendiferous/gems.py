@@ -24,7 +24,7 @@ class Gemset:
             return key
 
     def __iter__(self):
-        yield from self._values[self]
+        return iter(self._values[self])
 
     @cache
     def __repr__(self):
