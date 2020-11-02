@@ -1,10 +1,10 @@
 from tqdm import tqdm
 
-from splendiferous.utils.search import AStar
-from splendiferous.utils import print_cache_info
-from splendiferous.cards import CARDS
-from splendiferous.state import State
+from splendiferous import cards
 from splendiferous import gems
+from splendiferous.state import State
+from splendiferous.utils import print_cache_info
+from splendiferous.utils.search import AStar
 
 
 class Search(AStar):
@@ -14,25 +14,25 @@ class Search(AStar):
 
     def heuristic(self, state):
         return 0
-        return 1 - (state.score / max_score)
+        return 1 - (state.player_cards.score / max_score)
         return (
             len(state.bank_cards)
-            - (sum(state.discounts) / combined_discounts)
+            - (sum(state.player_cards.discounts) / combined_discounts)
             + 1
         )
 
 
 start = State(
     bank_gems=gems.ALL,
-    bank_cards=frozenset(CARDS),
+    bank_cards=cards.ALL,
     player_gems=gems.ZERO,
-    player_cards=frozenset(),
+    player_cards=cards.NONE,
 )
 
 discounts = [card.discount for card in start.bank_cards]
 total_discounts = sum(discounts, start=gems.ZERO)
 combined_discounts = sum(total_discounts)
-max_score = sum(card.points for card in CARDS)
+max_score = sum(card.points for card in cards.ALL)
 
 num_cards = len(start.bank_cards)
 
@@ -70,5 +70,4 @@ def main():
 
 
 if __name__ == '__main__':
-    # for _ in range(2):
-        main()
+    main()
