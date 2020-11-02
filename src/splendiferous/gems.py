@@ -4,8 +4,31 @@ from itertools import combinations
 from .utils import cache
 
 
-class Gemset(tuple):
-    __slots__ = ()
+class Gemset:
+    _values = {}
+    _keys = {}
+
+    def __new__(cls, value):
+        """"Turbocached" constructor.
+
+        Ensures that only one instance of this class is ever created for
+        a given value, enabling equality (including cache checks) to be
+        based on object identity rather than value.
+        """
+        value = tuple(value)
+        try:
+            return cls._keys[value]
+        except KeyError:
+            key = cls._keys[value] = super().__new__(cls)
+            cls._values[key] = value
+            return key
+
+    def __iter__(self):
+        yield from self._values[self]
+
+    @cache
+    def __repr__(self):
+        return '<{}>'.format(' '.join(map(str, self)))
 
     @cache
     def __add__(self, other):
@@ -103,3 +126,24 @@ def __single_takes(singles):
         yield sum(combo, ZERO)
     for component in singles:
         yield component
+
+
+if __name__ == '__main__':
+    from .utils.timing import timeit
+
+    setup = 'g = Gemset(range(5))'
+    stmts = [
+        'Gemset(range(5))',
+        'Gemset((0, 1, 2, 3, 4))',
+        'g + g',
+        'g - g',
+        'g * 2',
+        'g is g',
+        'g == g',
+        'g < g',
+        'g <= g',
+        'bool(g)',
+    ]
+    for stmt in stmts:
+        print(stmt)
+        timeit(stmt, setup=setup)
